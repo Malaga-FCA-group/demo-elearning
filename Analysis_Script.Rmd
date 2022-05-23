@@ -1,0 +1,154 @@
+---
+title: "Minimal generators from positive and negative attributes: analysing the knowledge space of a maths course"
+description: |
+  Script to reproduce the results of the paper.
+author:
+  - name: Domingo López-Rodríguez
+    url: https://dominlopez.netlify.app
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
+  - name: Nicolás Madrid
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
+  - name: Ángel Mora
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
+  - name: Manuel Ojeda-Hernández
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
+  - name: Francisco Pérez-Gámez
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
+
+date: "`r Sys.Date()`"
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+##%################################################%##
+#                                                    #
+####      Script for IJIS'2021 on e-learning      ####
+#                                                    #
+##%################################################%##
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This file accompanies the paper of the same title as a means to reproduce the results given in the paper.
+
+We interleave text, code and results to make it simple for the reader to follow the results and check the code.
+
+# Loading data
+
+First, we must load some `R` libraries:
+
+```{r}
+# Load libraries
+library(tidyverse)
+library(here)
+library(Matrix)
+library(fcaR)
+```
+
+Now, the core of the code is the `fcaR` package, but there are some extensions (for example, to compute the minimal generators) that are, at this moment, outside the package, and are included in the `code` folder. We must load them.
+
+```{r}
+# Load functions from "code" folder
+code_folder <- here("code")
+list.files(path = code_folder,
+           pattern = "*.R",
+           full.names = TRUE) %>% 
+  sapply(source) %>% 
+  invisible()  # To keep output clean
+
+```
+
+The data used in this paper is included in the `data` folder, so we must load it (it is a formal context named `context3.rds`):
+
+```{r}
+# Import data from data folder
+data_folder <- normalizePath(here("data"))
+fc <- FormalContext$new(file.path(data_folder, "context3.rds"))
+```
+
+# Formal Concept Analysis operations
+
+We use the functions from the `fcaR` package to compute both the concept lattice and the basis of implications of the mixed context.
+
+```{r}
+# Find concept lattice and implications
+fc$find_implications()
+# Number of implications in the basis
+fc$implications$cardinality()
+# Number of concepts in the lattice
+fc$concepts$size()
+```
+
+# First Analysis: Concept lattice to explore the Knowledge Space
+
+First, we build the sublattice formed by the concepts containing the attributes `-P` and `-F` (we use the notation `-X` to denote the negation of attribute `X`).
+
+```{r}
+# Concepts and sublattice of those concepts containing -P and -F
+selected_attributes <- c("-P", "-F")
+id_attr <- which(fc$attributes %in% selected_attributes)
+which_attr <- colSums(fc$concepts$intents()[id_attr, ]) == length(selected_attributes)
+# Creation of the sublattice
+sublattice <- fc$concepts$sublattice(which_attr)
+sublattice$plot()
+```
+
+# Second Analysis: Minimal generators
+
+The computation of the minimal generators is very computationally demanding (and may take hours to days, depending on the hardware), so we include the code but we provide the precomputed minimal generators in form of implication set.
+
+This code would compute the minimal generators.
+
+```{r eval = FALSE}
+# Minimal Generators
+lsi <- mingen0_minimals(
+  attributes = fc$attributes,
+  LHS = fc$implications$get_LHS_matrix(),
+  RHS = fc$implications$get_RHS_matrix())
+```
+
+This code would create the implication set from the minimal generators.
+
+```{r eval = FALSE}
+imps <- lsi$to_implications(context = fc$I)
+```
+
+Actually, we load the precomputed system of implications.
+
+```{r}
+imps <- readRDS(file = file.path(data_folder, "mingen_implications.RDS"))
+```
+
+From these implications, we select those that have `-Final` in the right-hand side:
+
+```{r}
+fail <- imps$filter(rhs = c("-Final"))
+```
+ 
+```{r echo = FALSE}
+fail$.__enclos_env__$private$I <- fc$I
+fail$.__enclos_env__$private$implication_support <- NULL
+```
+ 
+We only keep some of the implications, those whose support is above the 10\%. That is, implications applicable to, at least, 10\% of the students in the course. In addition, we remove some redundancies that appear.
+
+```{r}
+fail <- fail[fail$support() > 0.1]
+
+# This gives us 41 implications
+fail$cardinality()
+
+# We use simplification logic to remove redundancies:
+fail$apply_rules("simp")
+```
+ 
+The resulting set of implications is:
+
+```{r}
+fail
+```
+
