@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 
 This repository accompanies the paper of the same title as a means to reproduce the results given in the paper.
 
-We provide the code, data in the folders and the script `Analysis_Script.Rmd` which, once executed, provides the HTML document `Analysis_Script.html`.
+We provide the code, data in the folders and the script `Analysis_Script.Rmd` which, once executed, provides the HTML document `Analysis_Script.html`. 
 
-Below, we copy the code and results to facilitate checking the results.
+Below, we copy the code and results to facilitate checking the results. All the analyses can be reproduced using the commands below in a folder with `code` and `data` subfolders, which store the functions and the dataset and results used in the paper.
 
 # Loading data
 

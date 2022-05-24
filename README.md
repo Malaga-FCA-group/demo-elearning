@@ -11,6 +11,9 @@ We provide the code, data in the folders and the script
 `Analysis_Script.html`.
 
 Below, we copy the code and results to facilitate checking the results.
+All the analyses can be reproduced using the commands below in a folder
+with `code` and `data` subfolders, which store the functions and the
+dataset and results used in the paper.
 
 # Loading data
 
@@ -132,8 +135,8 @@ fail$cardinality()
 # We use simplification logic to remove redundancies:
 fail$apply_rules("simp")
 #> Processing batch
-#> --> Simplification: from 41 to 20 in 0.043 secs.
-#> Batch took 0.044 secs.
+#> --> Simplification: from 41 to 20 in 0.04 secs.
+#> Batch took 0.043 secs.
 ```
 
 The resulting set of implications is:
