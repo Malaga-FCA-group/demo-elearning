@@ -1,18 +1,18 @@
 ---
-title: "Minimal generators from positive and negative attributes: analysing the knowledge space of a maths course"
+title: "Minimal generators from positive and negative attributes: analysing the knowledge space of a Mathematics course"
 description: |
   Script to reproduce the results of the paper.
 author:
+  - name: Manuel Ojeda-Hernández
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
+  - name: Francisco Pérez-Gámez
+    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
   - name: Domingo López-Rodríguez
     url: https://dominlopez.netlify.app
     affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
   - name: Nicolás Madrid
     affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
   - name: Ángel Mora
-    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
-  - name: Manuel Ojeda-Hernández
-    affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
-  - name: Francisco Pérez-Gámez
     affiliation: Departamento de Matemática Aplicada, Universidad de Málaga
 
 date: "`r Sys.Date()`"
