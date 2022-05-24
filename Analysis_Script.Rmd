@@ -136,7 +136,7 @@ fail$.__enclos_env__$private$I <- fc$I
 fail$.__enclos_env__$private$implication_support <- NULL
 ```
  
-We only keep some of the implications, those whose support is above the 10\%. That is, implications applicable to, at least, 10\% of the students in the course. In addition, we remove some redundancies that appear.
+We only keep some of the implications, those whose support is above the 10\%. That is, implications applicable to, at least, 10\% of the students in the course. In addition, we remove some redundancies that appear by using Simplification Logic.
 
 ```{r}
 fail <- fail[fail$support() > 0.1]

@@ -67,7 +67,7 @@ fc$concepts$size()
 #> [1] 1769
 ```
 
-# First Analysis: Concept lattice to explore the Knowledge Space
+# First Analysis: Exploration of the Knowledge Space
 
 First, we build the sublattice formed by the concepts containing the
 attributes `-P` and `-F` (we use the notation `-X` to denote the
@@ -123,7 +123,8 @@ fail <- imps$filter(rhs = c("-Final"))
 
 We only keep some of the implications, those whose support is above the
 10%. That is, implications applicable to, at least, 10% of the students
-in the course. In addition, we remove some redundancies that appear.
+in the course. In addition, we remove some redundancies that appear by
+using the Simplification Logic.
 
 ``` r
 fail <- fail[fail$support() > 0.1]
@@ -135,8 +136,8 @@ fail$cardinality()
 # We use simplification logic to remove redundancies:
 fail$apply_rules("simp")
 #> Processing batch
-#> --> Simplification: from 41 to 20 in 0.04 secs.
-#> Batch took 0.043 secs.
+#> --> Simplification: from 41 to 20 in 0.042 secs.
+#> Batch took 0.044 secs.
 ```
 
 The resulting set of implications is:
